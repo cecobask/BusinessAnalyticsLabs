@@ -1,7 +1,7 @@
 import pandas
 import numpy
 
-nesarc_data = pandas.read_csv('nesarc_pds.csv', low_memory=False)
+nesarc_data = pandas.read_csv('../nesarc_pds.csv', low_memory=False)
 nesarc_data.columns = map(str.upper, nesarc_data.columns)
 pandas.set_option('display.float_format',lambda x:'%f'%x)
 
