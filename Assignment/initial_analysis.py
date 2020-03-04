@@ -124,7 +124,7 @@ Ratio of bossy to soft parents (%):\n
 # 1-8, 50
 
 dataset['H1TO1'] = dataset['H1TO1'].replace([6, 8, 9], numpy.nan)
-dataset['H1TO2'] = dataset['H1TO2'].replace([96, 97, 98], numpy.nan)
+dataset['H1TO2'] = dataset['H1TO2'].replace([0, 96, 97, 98], numpy.nan)
 dataset['H1TO7'] = dataset['H1TO7'].replace([0, 96, 97, 98], numpy.nan)
 
 print(f"""==============================================================================================================
@@ -136,14 +136,18 @@ Have you ever tried cigarette smoking, even just 1 or 2 puffs? (%)
 
 # Create custom bins from variable dataset['H1TO2'].
 dataset['H1TO2_BINNED'] = pd.cut(dataset['H1TO2'],
-                                 [-1, 0, 5, 10, 15, 20],
-                                 labels=['NEVER', '1-5', '6-10', '11-15', '16-20'])
+                                 [0, 5, 10, 15, 20],
+                                 labels=['1-5', '6-10', '11-15', '16-20'])
 
 print(f"""==============================================================================================================
 How old were you when you smoked a whole cigarette for the first time? (%)
 This is a newly created variable that uses 'pandas.cut()' function to create custom age bins.\n
 {dataset['H1TO2_BINNED'].value_counts(normalize=True, sort=False)}
 """)
+
+print(f"""==============================================================================================================
+Descriptive statistics about the age of smokers' when they first tried smoking cigarettes:\n
+{dataset['H1TO2'].describe()}""")
 
 dataset['CIG_MONTHLY'] = dataset['H1TO7'] * 30.42  # Cigarettes per day * average number of days per month.
 dataset['CIG_PACKS_MONTHLY'] = round(dataset['CIG_MONTHLY'] / 20)  # Typically a pack contains 20 cigarettes.
@@ -154,3 +158,7 @@ dataset['CIG_PACKS_MONTHLY_CUT'] = pd.cut(dataset['CIG_PACKS_MONTHLY'],  # Custo
 print(f"""==============================================================================================================
 Number of cigarette packs smoked per month (%):\n
 {dataset['CIG_PACKS_MONTHLY_CUT'].value_counts(sort=False, normalize=True)}""")
+
+print(f"""==============================================================================================================
+Descriptive statistics about number of cigarettes smoked by smokers per month:\n
+{dataset['CIG_MONTHLY'].describe()}""")
