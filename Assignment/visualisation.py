@@ -69,6 +69,25 @@ def rename_h1to1(row):
         return 'YES'
 
 
+def build_countplot(column_name, title, ylabel, xlabel='FREQUENCY'):
+    """
+    Abstract the creation and showing of countplot, as it is heavily used
+    for my research questions, due to their categorical nature.
+    :param column_name: str
+    :param title: str
+    :param ylabel: str
+    :param xlabel: str
+    :return: None
+    """
+    plt.figure(figsize=(7.5, 4.8))
+    ax = seaborn.countplot(y=column_name, data=dataset)
+    plt.title(title)
+    plt.ylabel(ylabel)
+    plt.xlabel(xlabel)
+    show_axis_percentages(ax, dataset[column_name])
+    plt.show()
+
+
 # Make a subset that includes ['H1RF1', 'H1RM1'] columns and apply a function to each row.
 dataset['PARENTS_EDU_LEVEL'] = dataset.loc[:, ['H1RF1', 'H1RM1']] \
     .apply(lambda row: parents_edu_level(row), axis=1)
@@ -78,15 +97,12 @@ dataset['PARENTS_EDU_LEVEL_BINS'] = pd.cut(dataset['PARENTS_EDU_LEVEL'],
                                            [0, 4, 6, 8, 9, 10],
                                            labels=['High-school', 'Vocational', 'Uni', 'Beyond Uni', 'None'])
 
-# Display a chart showcasing the education level of parents.
-plt.figure(figsize=(7.5, 4.8))  # Change size of the chart.
-ax = seaborn.countplot(y='PARENTS_EDU_LEVEL_BINS', data=dataset)
-plt.ylabel('EDUCATION LEVEL')
-plt.xlabel('FREQUENCY')
-plt.title('FREQUENCY DISTRIBUTION AND PERCENTAGES FOR THE AVERAGE\n'
-          'PARENTS EDUCATION LEVEL OF KIDS IN THE ADD HEALTH STUDY')
-show_axis_percentages(ax, dataset['PARENTS_EDU_LEVEL_BINS'])
-plt.show()
+# Display a chart showcasing the frequency distribution and percentages
+# of parents' education level.
+build_countplot(column_name='PARENTS_EDU_LEVEL_BINS',
+                title='FREQUENCY DISTRIBUTION AND PERCENTAGES FOR THE AVERAGE\n'
+                      'PARENTS EDUCATION LEVEL OF KIDS IN THE ADD HEALTH STUDY',
+                ylabel='EDUCATION LEVEL')
 
 # Make a subset that includes ['H1WP9', 'H1WP10', 'H1WP13', 'H1WP14'] columns and apply a function to each row.
 dataset['PARENTS_CHILD_BOND'] = dataset.loc[:, ['H1WP9', 'H1WP10', 'H1WP13', 'H1WP14']] \
@@ -99,24 +115,16 @@ dataset['PARENTS_CHILD_BOND_BINS'] = pd.cut(dataset['PARENTS_CHILD_BOND'],
 
 # Display a chart showcasing the frequency distribution and percentages
 # about the kid - parents bonding levels.
-plt.figure(figsize=(7.5, 4.8))  # Change size of the chart.
-ax = seaborn.countplot(y='PARENTS_CHILD_BOND_BINS', data=dataset)
-plt.ylabel('BONDING LEVEL')
-plt.xlabel('FREQUENCY')
-plt.title('FREQUENCY DISTRIBUTION AND PERCENTAGES FOR BONDING LEVELS\n'
-          'BASED ON THE RELATIONSHIPS PARENTS-CHILD AND CHILD-PARENTS')
-show_axis_percentages(ax, dataset['PARENTS_CHILD_BOND_BINS'])
-plt.show()
+build_countplot(column_name='PARENTS_CHILD_BOND_BINS',
+                title='FREQUENCY DISTRIBUTION AND PERCENTAGES FOR BONDING LEVELS\n'
+                      'BASED ON THE RELATIONSHIPS PARENTS-CHILD AND CHILD-PARENTS',
+                ylabel='BONDING LEVEL')
 
 # Display a chart showcasing the frequency distribution and percentages
 # about the ratio of soft to bossy parent types.
-plt.figure(figsize=(7.5, 4.8))  # Change size of the chart.
-ax = seaborn.countplot(y='PARENT_TYPES', data=dataset)
-plt.title('FREQUENCY DISTRIBUTION AND PERCENTAGES ABOUT\nTHE RATIO OF BOSSY TO SOFT PARENT TYPES')
-plt.ylabel('PARENTS TYPE')
-plt.xlabel('FREQUENCY')
-show_axis_percentages(ax, dataset['PARENT_TYPES'])
-plt.show()
+build_countplot(column_name='PARENT_TYPES',
+                title='FREQUENCY DISTRIBUTION AND PERCENTAGES ABOUT\nTHE RATIO OF BOSSY TO SOFT PARENT TYPES',
+                ylabel='PARENTS TYPE')
 
 # Rename values of 'H1TO1' column.
 dataset['H1TO1RN'] = dataset.loc[:, 'H1TO1'] \
@@ -124,33 +132,21 @@ dataset['H1TO1RN'] = dataset.loc[:, 'H1TO1'] \
 
 # Display a chart showcasing the frequency distribution and percentages
 # whether the children have ever tried smoking cigarettes.
-plt.figure(figsize=(7.5, 4.8))  # Change size of the chart.
-ax = seaborn.countplot(y='H1TO1RN', data=dataset)
-plt.title('FREQUENCY DISTRIBUTION AND PERCENTAGES OF RESPONSE TO QUESTION:\n'
-          'HAS THE CHILD EVER TRIED SMOKING CIGARETTES?')
-plt.ylabel('ANSWER')
-plt.xlabel('FREQUENCY')
-show_axis_percentages(ax, dataset['H1TO1RN'])
-plt.show()
+build_countplot(column_name='H1TO1RN',
+                title='FREQUENCY DISTRIBUTION AND PERCENTAGES OF RESPONSE TO QUESTION:\n'
+                      'HAS THE CHILD EVER TRIED SMOKING CIGARETTES?',
+                ylabel='ANSWER')
 
 # Display a chart showcasing the frequency distribution and percentages
 # of the age at which children smoked their first cigarette.
-plt.figure(figsize=(7.5, 4.8))  # Change size of the chart.
-ax = seaborn.countplot(y='H1TO2_BINS', data=dataset)
-plt.title('FREQUENCY DISTRIBUTION AND PERCENTAGES OF THE AGE AT WHICH\n'
-          'CHILDREN HAVE SMOKED THEIR FIRST CIGARETTE')
-plt.ylabel('AGE')
-plt.xlabel('FREQUENCY')
-show_axis_percentages(ax, dataset['H1TO2_BINS'])
-plt.show()
+build_countplot(column_name='H1TO2_BINS',
+                title='FREQUENCY DISTRIBUTION AND PERCENTAGES OF THE AGE AT WHICH\n'
+                      'CHILDREN HAVE SMOKED THEIR FIRST CIGARETTE',
+                ylabel='AGE')
 
 # Display a chart showcasing the frequency distribution and percentages
 # of cigarette packs smoked per month by children that are smokers
-plt.figure(figsize=(7.5, 4.8))  # Change size of the chart.
-ax = seaborn.countplot(y='CIG_PACKS_MONTHLY_BINS', data=dataset)
-plt.title('FREQUENCY DISTRIBUTION AND PERCENTAGES OF CIGARETTE PACKS\n'
-          'SMOKED PER MONTH BY CHILDREN THAT ARE SMOKERS')
-plt.ylabel('CIGARETTE PACKS')
-plt.xlabel('FREQUENCY')
-show_axis_percentages(ax, dataset['CIG_PACKS_MONTHLY_BINS'])
-plt.show()
+build_countplot(column_name='CIG_PACKS_MONTHLY_BINS',
+                title='FREQUENCY DISTRIBUTION AND PERCENTAGES OF CIGARETTE PACKS\n'
+                      'SMOKED PER MONTH BY CHILDREN THAT ARE SMOKERS',
+                ylabel='CIGARETTE PACKS')
