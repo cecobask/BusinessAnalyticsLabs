@@ -30,10 +30,15 @@ def parents_type(row):
     Possible answers are:
     0 -- no
     1 -- yes
+    A parent is considered soft if they let their child make their own decisions about 4 or more questions (out of 7).
     :param row: Series
     :return: bool
     """
-    return 'BOSSY' if 0 in row.values else 'SOFT'
+    # Create a dictionary with unique values (1 and 0) and their counts.
+    unique, counts = numpy.unique(row.values, return_counts=True)
+    counts_dict = dict(zip(unique, counts))
+    yes_answers = counts_dict.get(1, 0)  # Get the number of 'yes' answers or replace with 0 if missing.
+    return 'SOFT' if yes_answers > 4 else 'BOSSY'
 
 
 # Create a new variable using a subset of the original dataset.

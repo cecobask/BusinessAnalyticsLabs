@@ -69,9 +69,10 @@ dataset['PARENTS_CHILD_BOND_BINS'] = pd.cut(dataset['PARENTS_CHILD_BOND'],
                                             [0, 2, 3.5, 5],
                                             labels=['Low', 'Medium', 'High'])
 
-# Display a chart showcasing the bonding levels.
+# Display a chart showcasing the kid - parents bonding levels.
 seaborn.countplot(x='PARENTS_CHILD_BOND_BINS', data=dataset)
 plt.xlabel('BONDING LEVEL')
 plt.ylabel('FREQUENCY')
 plt.title('BONDING LEVELS BASED ON THE RELATIONSHIPS\nPARENTS-CHILD AND CHILD-PARENTS', wrap=True)
 plt.show()
+
