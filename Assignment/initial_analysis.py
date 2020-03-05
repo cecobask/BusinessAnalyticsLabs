@@ -38,7 +38,7 @@ def parents_type(row):
     unique, counts = numpy.unique(row.values, return_counts=True)
     counts_dict = dict(zip(unique, counts))
     yes_answers = counts_dict.get(1, 0)  # Get the number of 'yes' answers or replace with 0 if missing.
-    return 'SOFT' if yes_answers > 4 else 'BOSSY'
+    return 'Soft' if yes_answers > 4 else 'Bossy'
 
 
 # Create a new variable using a subset of the original dataset.

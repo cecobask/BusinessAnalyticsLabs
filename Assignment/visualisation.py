@@ -76,3 +76,18 @@ plt.ylabel('FREQUENCY')
 plt.title('BONDING LEVELS BASED ON THE RELATIONSHIPS\nPARENTS-CHILD AND CHILD-PARENTS', wrap=True)
 plt.show()
 
+# Display a chart showcasing the ratio of soft to bossy parent types.
+plt.figure(figsize=(7.5, 4.8))  # Change size of the chart.
+ax = seaborn.countplot(y="PARENT_TYPES", data=dataset)
+plt.title('RATIO OF BOSSY TO SOFT PARENT TYPES')
+plt.xlabel('FREQUENCY')
+plt.ylabel('PARENTS TYPE')
+
+for p in ax.patches:  # Add percentages to the right of the horizontal bars.
+    percentage = '{:.1f}%'.format(100 * p.get_width() / len(dataset['PARENT_TYPES']))
+    x = p.get_x() + p.get_width() + 0.02
+    y = p.get_y() + p.get_height() / 2
+    ax.annotate(percentage, (x, y))
+
+plt.show()
+
