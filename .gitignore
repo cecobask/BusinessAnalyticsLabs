@@ -90,3 +90,5 @@ fabric.properties
 
 # Ignore large file.
 nesarc_pds.csv
+
+**/__pycache__

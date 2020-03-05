@@ -4,7 +4,7 @@ import numpy
 # Load dataset.
 addhealth_data = pd.read_csv('../addhealth_pds.csv', low_memory=False)
 
-# Restrict dataset to observations that know their parents.
+# Restrict dataset to observations that know their biological parents.
 dataset = addhealth_data[(addhealth_data['H1NF1'] == 7) & (addhealth_data['H1NM1'] == 7)].copy()
 pd.set_option("display.precision", 3)  # Set display results to 0 decimal points.
 
