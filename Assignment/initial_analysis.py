@@ -115,31 +115,6 @@ if __name__ == '__main__':
         "# Answer codes are identical to previous printout.\n\n"
         f"{dataset['H1RF1'].value_counts(normalize=True)}")
 
-    # Section 14: Resident Mother
-
-    print(
-        "\n==========================================================================================================\n"
-        "How far in school did the mother go? (%)\n"
-        "#1 eighth grade or less\n"
-        "#2 more than eighth grade, but did not graduate from high school\n"
-        "#3 went to a business, trade, or vocational school instead of high school\n"
-        "#4 high school graduate\n"
-        "#5 completed a GED\n"
-        "#6 went to a business, trade, or vocational school after high school\n"
-        "#7 went to college, but did not graduate\n"
-        "#8 graduated from a college or university\n"
-        "#9 professional training beyond a four-year college or university\n"
-        "#10 She never went to school.\n\n"
-        f"{dataset['H1RM1'].value_counts(normalize=True)}")
-
-    # Section 15: Resident Father
-
-    print(
-        "\n==========================================================================================================\n"
-        "How far in school did the father go? (%)\n"
-        "# Answer codes are identical to previous printout.\n\n"
-        f"{dataset['H1RF1'].value_counts(normalize=True)}")
-
     # Section 16: Relations with Parents
 
     print(
