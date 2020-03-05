@@ -19,11 +19,7 @@ dataset['H1RF1'] = dataset['H1RF1'].replace([11, 12, 96, 97, 98], numpy.nan)
 # Section 16: Relations with Parents
 
 # Loop over indices array and replace unnecessary values with null.
-for i in [9, 13, 10, 14]:
-    dataset[f'H1WP{i}'] = dataset[f'H1WP{i}'].replace([6, 7, 8], numpy.nan)
-
-# Loop over indices array and replace unnecessary values with null.
-for i in range(1, 8):
+for i in [*range(1, 8), 9, 13, 10, 14]:
     dataset[f'H1WP{i}'] = dataset[f'H1WP{i}'].replace([6, 7, 8, 9], numpy.nan)
 
 
