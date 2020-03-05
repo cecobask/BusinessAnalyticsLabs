@@ -52,13 +52,13 @@ dataset['H1TO2'] = dataset['H1TO2'].replace([0, 96, 97, 98], numpy.nan)
 dataset['H1TO7'] = dataset['H1TO7'].replace([0, 96, 97, 98], numpy.nan)
 
 # Create custom bins from variable dataset['H1TO2'].
-dataset['H1TO2_BINNED'] = pd.cut(dataset['H1TO2'],
+dataset['H1TO2_BINS'] = pd.cut(dataset['H1TO2'],
                                  [0, 5, 10, 15, 20],
                                  labels=['1-5', '6-10', '11-15', '16-20'])
 
 dataset['CIG_MONTHLY'] = dataset['H1TO7'] * 30.42  # Cigarettes per day * average number of days per month.
 dataset['CIG_PACKS_MONTHLY'] = round(dataset['CIG_MONTHLY'] / 20)  # Typically a pack contains 20 cigarettes.
-dataset['CIG_PACKS_MONTHLY_CUT'] = pd.cut(dataset['CIG_PACKS_MONTHLY'],  # Custom category bins.
+dataset['CIG_PACKS_MONTHLY_BINS'] = pd.cut(dataset['CIG_PACKS_MONTHLY'],  # Custom category bins.
                                           [0, 3, 6, 9, 136],
                                           labels=['1-3', '4-6', '7-9', '10+'])
 
@@ -164,7 +164,7 @@ if __name__ == '__main__':
         "\n==========================================================================================================\n"
         "How old were you when you smoked a whole cigarette for the first time? (%)\n"
         "This is a newly created variable that uses 'pandas.cut()' function to create custom age bins.\n\n"
-        f"{dataset['H1TO2_BINNED'].value_counts(normalize=True, sort=False)}")
+        f"{dataset['H1TO2_BINS'].value_counts(normalize=True, sort=False)}")
 
     print(
         "\n==========================================================================================================\n"
@@ -175,7 +175,7 @@ if __name__ == '__main__':
         "\n==========================================================================================================\n"
         "Bins of cigarette packs smoked per month (%):\n"
         "This is a newly created variable that uses 'pandas.cut()' function to create custom age bins.\n\n"
-        f"{dataset['CIG_PACKS_MONTHLY_CUT'].value_counts(sort=False, normalize=True)}")
+        f"{dataset['CIG_PACKS_MONTHLY_BINS'].value_counts(sort=False, normalize=True)}")
 
     print(
         "\n==========================================================================================================\n"
