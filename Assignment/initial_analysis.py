@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy
+from Assignment import helpers
 
 # Load dataset.
 addhealth_data = pd.read_csv('../addhealth_pds.csv', low_memory=False)
@@ -22,28 +23,9 @@ dataset['H1RF1'] = dataset['H1RF1'].replace([11, 12, 96, 97, 98], numpy.nan)
 for i in [*range(1, 8), 9, 13, 10, 14]:
     dataset[f'H1WP{i}'] = dataset[f'H1WP{i}'].replace([6, 7, 8, 9], numpy.nan)
 
-
-def parents_type(row):
-    """
-    Determine if the parents are bossy or soft.
-    The questions asked are of format: Do your parents let you make your own decisions about...
-    Possible answers are:
-    0 -- no
-    1 -- yes
-    A parent is considered soft if they let their child make their own decisions about 4 or more questions (out of 7).
-    :param row: Series
-    :return: bool
-    """
-    # Create a dictionary with unique values (1 and 0) and their counts.
-    unique, counts = numpy.unique(row.values, return_counts=True)
-    counts_dict = dict(zip(unique, counts))
-    yes_answers = counts_dict.get(1, 0)  # Get the number of 'yes' answers or replace with 0 if missing.
-    return 'Soft' if yes_answers > 4 else 'Bossy'
-
-
 # Create a new variable using a subset of the original dataset.
 dataset['PARENT_TYPES'] = dataset.loc[:, ['H1WP1', 'H1WP2', 'H1WP3', 'H1WP4', 'H1WP5', 'H1WP6', 'H1WP7']] \
-    .apply(lambda row: parents_type(row), axis=1)
+    .apply(lambda row: helpers.parents_type(row), axis=1)
 
 # Section 28: Tobacco, Alcohol, Drugs
 
@@ -53,14 +35,14 @@ dataset['H1TO7'] = dataset['H1TO7'].replace([0, 96, 97, 98], numpy.nan)
 
 # Create custom bins from variable dataset['H1TO2'].
 dataset['H1TO2_BINS'] = pd.cut(dataset['H1TO2'],
-                                 [0, 5, 10, 15, 20],
-                                 labels=['1-5', '6-10', '11-15', '16-20'])
+                               [0, 5, 10, 15, 20],
+                               labels=['1-5', '6-10', '11-15', '16-20'])
 
 dataset['CIG_MONTHLY'] = dataset['H1TO7'] * 30.42  # Cigarettes per day * average number of days per month.
 dataset['CIG_PACKS_MONTHLY'] = round(dataset['CIG_MONTHLY'] / 20)  # Typically a pack contains 20 cigarettes.
 dataset['CIG_PACKS_MONTHLY_BINS'] = pd.cut(dataset['CIG_PACKS_MONTHLY'],  # Custom category bins.
-                                          [0, 3, 6, 9, 136],
-                                          labels=['1-3', '4-6', '7-9', '10+'])
+                                           [0, 3, 6, 9, 136],
+                                           labels=['1-3', '4-6', '7-9', '10+'])
 
 """
 These printouts will be shown only when the script is ran.
