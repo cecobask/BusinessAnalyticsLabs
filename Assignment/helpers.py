@@ -102,3 +102,12 @@ def build_countplot(dataset, column_name, title, ylabel, xlabel='FREQUENCY'):
     plt.xlabel(xlabel)
     show_axis_percentages(ax, dataset[column_name])
     plt.show()
+
+
+def build_catplot(data, x, y, title, xlabel, ylabel, kind='bar', ci=None, height=6.3):
+    seaborn.catplot(x=x, y=y, data=data, kind=kind, ci=ci, height=height)
+    plt.title(title)
+    plt.xlabel(xlabel)
+    plt.ylabel(ylabel)
+    plt.show()
+
