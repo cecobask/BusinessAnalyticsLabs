@@ -1,6 +1,8 @@
 import seaborn
 import matplotlib.pyplot as plt
 import numpy
+import pandas as pd
+from scipy import stats
 
 
 def parents_type(row):
@@ -105,9 +107,53 @@ def build_countplot(dataset, column_name, title, ylabel, xlabel='FREQUENCY'):
 
 
 def build_catplot(data, x, y, title, xlabel, ylabel, kind='bar', ci=None, height=6.3):
+    """
+    Abstract the creation and showing of catplot, as it is heavily used.
+    :param data: DataFrame
+    :param x: str
+    :param y: str
+    :param title: str
+    :param xlabel: str
+    :param ylabel: str
+    :param kind: str
+    :param ci: str
+    :param height: float
+    :return: None
+    """
     seaborn.catplot(x=x, y=y, data=data, kind=kind, ci=ci, height=height)
     plt.title(title)
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
     plt.show()
 
+
+def chi2test(dataset, var_a, var_b, alpha=0.05):
+    """
+    Creates a contingency table for passed in variables and
+    runs chi-squared test to determine whether to reject/keep null hypothesis.
+    :param dataset: DataFrame
+    :param var_a: str
+    :param var_b: str
+    :param alpha: float
+    :return: None
+    """
+    print('\n=======================================================================================================\n')
+
+    # Create contingency table for passed in variables.
+    crosstab = pd.crosstab(dataset[var_a], dataset[var_b])
+    print(f'\n{crosstab}\n')
+
+    # Chi-square test of independence of variables in a contingency table.
+    print(f'\nRunning chi-squared test on variables \'{var_a}\' and \'{var_b}\':\n\n')
+    stat, p, dof, expected = stats.chi2_contingency(crosstab)
+
+    # Determine whether to reject or keep null hypothesis
+    print(f'Significance: α = {alpha}\n'
+          f'p-value: {p}\n'
+          f'Degrees of freedom: {dof}\n'
+          f'Expected: {expected}\n\n')
+
+    if p <= alpha:
+        print(f'Variables \'{var_a}\' and \'{var_b}\' are associated (rejected H0).')
+    else:
+        print('Variables \'{var_a}\' and \'{var_b}\' are not associated (failed to reject H0).')
