@@ -178,6 +178,13 @@ def anova(dataset, var_a, var_b, h0, h1, alpha=0.05):
     model = smf.ols(formula=f'{var_a} ~ C({var_b})', data=dataset).fit()
     print(model.summary())
 
+    p = model.pvalues[1]
+
+    if p <= alpha:
+        print(f'Rejected H0. \n{h0}\n')
+    else:
+        print(f'Failed to reject H0. \n{h1}\n')
+
     print(
         "\n==========================================================================================================\n"
         f'Means of {var_a} for all {var_b} categories:\n\n'
@@ -186,10 +193,3 @@ def anova(dataset, var_a, var_b, h0, h1, alpha=0.05):
         "\n==========================================================================================================\n"
         f'Standard deviations of {var_a} for all {var_b} categories:\n\n'
         f'{dataset.groupby(var_b).std()}\n')
-
-    p = model.pvalues[1]
-
-    if p <= alpha:
-        print(f'Rejected H0. \n{h0}\n')
-    else:
-        print(f'Failed to reject H0. \n{h1}\n')
