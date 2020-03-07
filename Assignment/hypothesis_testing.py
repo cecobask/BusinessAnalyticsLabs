@@ -19,7 +19,7 @@ helpers.chi2test(dataset=dataset,
                  h1='The type of parents and whether their children have tried '
                     'smoking cigarettes are dependent to each other.')
 
-f"""
+"""
 Hypothesis:
 H0: There is no relationship between the number of cigarette packs smoked per month
     between children aged under 13 and over 13.
@@ -37,6 +37,7 @@ subset.rename(columns={"H1TO2": "SMOKE_AGES"}, inplace=True)  # Rename column.
 subset['SMOKE_AGES_CAT'] = pd.cut(subset['SMOKE_AGES'],
                                   [0, 12, 18],
                                   labels=['<13', '>=13'])
+
 helpers.anova(dataset=subset,
               var_a='CIG_PACKS_MONTHLY',
               var_b='SMOKE_AGES_CAT',
@@ -44,3 +45,18 @@ helpers.anova(dataset=subset,
                  'between children aged under 13 and over 13.',
               h1='There is a relationship between the number of cigarette packs smoked per month'
                  'between children aged under 13 and over 13.')
+
+"""
+Hypothesis:
+H0: The bond parents:children and number of cigarette packs children smoke are independent (no association).
+H1: The bond parents:children and number of cigarette packs children smoke are dependent to each other.
+
+Significance level: α = 0.05
+"""
+helpers.chi2test(dataset=dataset,
+                 var_b='CIG_PACKS_YEARLY',
+                 var_a='PARENTS_CHILD_BOND_OR_NOT',
+                 h0='The bond parents:children and number of cigarette packs '
+                    'children smoke are independent (no association).',
+                 h1='The bond parents:children and number of cigarette packs '
+                    'children smoke are dependent to each other.')
