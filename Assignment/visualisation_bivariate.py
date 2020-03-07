@@ -33,7 +33,7 @@ if __name__ == '__main__':
                           ylabel='MEAN SMOKING ATTEMPT RATE')
 
     # Graph showing the relationship between the age when children first smoked a cigarette
-    # and the number of cigarette packs they smoked per month. (Aged 10 or over)
+    # and the number of cigarette packs they smoked per month.
     plt.figure(figsize=(7.5, 4.8))
     seaborn.regplot(data=dataset,
                     x="H1TO2",

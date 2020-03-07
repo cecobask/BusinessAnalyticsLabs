@@ -2,6 +2,7 @@ import seaborn
 import matplotlib.pyplot as plt
 import numpy
 import pandas as pd
+import statsmodels.formula.api as smf
 from scipy import stats
 
 
@@ -127,13 +128,15 @@ def build_catplot(data, x, y, title, xlabel, ylabel, kind='bar', ci=None, height
     plt.show()
 
 
-def chi2test(dataset, var_a, var_b, alpha=0.05):
+def chi2test(dataset, var_a, var_b, h0, h1, alpha=0.05):
     """
     Creates a contingency table for passed in variables and
     runs chi-squared test to determine whether to reject/keep null hypothesis.
     :param dataset: DataFrame
     :param var_a: str
     :param var_b: str
+    :param h0: str
+    :param h1: str
     :param alpha: float
     :return: None
     """
@@ -154,6 +157,39 @@ def chi2test(dataset, var_a, var_b, alpha=0.05):
           f'Expected: {expected}\n\n')
 
     if p <= alpha:
-        print(f'Variables \'{var_a}\' and \'{var_b}\' are associated (rejected H0).')
+        print(f'Rejected H0. \n{h0}\n')
     else:
-        print('Variables \'{var_a}\' and \'{var_b}\' are not associated (failed to reject H0).')
+        print(f'Failed to reject H0. \n{h1}\n')
+
+
+def anova(dataset, var_a, var_b, h0, h1, alpha=0.05):
+    """
+    Creates an OLS model model and determines whether
+    to reject/keep null hypothesis based on the p-value.
+    :param dataset: DataFrame
+    :param var_a: str
+    :param var_b: str
+    :param h0: str
+    :param h1: str
+    :param alpha: float
+    :return: None
+    """
+    # Using OLS function for calculating the F-statistic and associated p-value.
+    model = smf.ols(formula=f'{var_a} ~ C({var_b})', data=dataset).fit()
+    print(model.summary())
+
+    print(
+        "\n==========================================================================================================\n"
+        f'Means of {var_a} for all {var_b} categories:\n\n'
+        f'{dataset.groupby(var_b).mean()}\n')
+    print(
+        "\n==========================================================================================================\n"
+        f'Standard deviations of {var_a} for all {var_b} categories:\n\n'
+        f'{dataset.groupby(var_b).std()}\n')
+
+    p = model.pvalues[1]
+
+    if p <= alpha:
+        print(f'Rejected H0. \n{h0}\n')
+    else:
+        print(f'Failed to reject H0. \n{h1}\n')
