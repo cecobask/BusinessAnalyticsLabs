@@ -3,7 +3,7 @@ import numpy
 
 # Load dataset.
 pandas.set_option('display.max_columns', 20)
-data = pandas.read_csv('../addhealth_pds.csv', low_memory=False)
+data = pandas.read_csv('../Assignment/dataset/addhealth_pds.csv', low_memory=False)
 
 # Extract columns relating to ethnicity.
 data['H1GI4'] = pandas.to_numeric(data['H1GI4'])
